@@ -1,0 +1,26 @@
+添付するCSVファイルの各行に対して、以下のStepを実行してください。
+Step.1 記事名(title列)とURL(url列)から、不祥事の主体組織/個人名を抽出して、scandal列に追加してください。
+Step.2 Step.1で抽出した組織/個人が民間企業の場合、company列にYを追加してください。そうでない場合、nにしてください。
+Step.3 Step.2で民間企業だった場合、関連する上場企業（例：その企業が上場していない場合その親企業）があれば、その企業名をmarket_name列に追加してください。
+Step.3  Step.3で上場企業だった場合、その企業の株式銘柄をネットで確認して、market_symbol列に追加してください。
+
+
+例えば、以下のCSVデータの場合：
+title, date, url, scandal, company, market_name, market_symbol
+損保ジャパン「不祥事忘れない」 社員向けに資料展示室,2024-11-07 15:05:18,https://www.nikkei.com/article/DGXZQOUB070900X01C24A1000000/
+一大イベントの直前に不祥事発覚 カナデビア社長「極めて残念」,2024-11-08 15:02:29,https://www.asahi.com/articles/ASSC81SZQSC8ULFA027M.html
+不祥事相次ぐ鹿児島県警 警察庁の見解は? 書面で回答された本部長の転出経緯と、「隠蔽の疑惑なし」との結論根拠,2024-11-09 07:00:00,https://373news.com/_news/storyid/204175/
+また土木部...25歳福島県職員が逮捕 盗撮か 入札巡る県職員3人の起訴に続き 再発防止の徹底虚しく：ニュース,2024-11-06 19:20:00,https://www.fukushima-tv.co.jp/localnews/2024/11/2024110600000011.html
+ＩＣＣ主任検察官の不祥事調査,2024-11-12 06:36:26,https://webun.jp/articles/-/706439
+
+正解はこのようになります：
+title,date,url,scandal,company,market_name,stock_symbol
+損保ジャパン「不祥事忘れない」 社員向けに資料展示室,2024/11/7 15:05,https://www.nikkei.com/article/DGXZQOUB070900X01C24A1000000/,損保ジャパン,Y,SOMPOホールディングス,8630
+一大イベントの直前に不祥事発覚 カナデビア社長「極めて残念」,2024/11/8 15:02,https://www.asahi.com/articles/ASSC81SZQSC8ULFA027M.html,カナデビア,Y,カナデビア,7004
+不祥事相次ぐ鹿児島県警 警察庁の見解は? 書面で回答された本部長の転出経緯と、「隠蔽の疑惑なし」との結論根拠,2024/11/9 7:00,https://373news.com/_news/storyid/204175/,鹿児島県警,n,,
+また土木部...25歳福島県職員が逮捕 盗撮か 入札巡る県職員3人の起訴に続き 再発防止の徹底虚しく：ニュース,2024/11/6 19:20,https://www.fukushima-tv.co.jp/localnews/2024/11/2024110600000011.html,福島県,n,,
+ＩＣＣ主任検察官の不祥事調査,2024/11/12 6:36,https://webun.jp/articles/-/706439,ICC,n,,
+
+
+まず、この作業について完璧に理解しましたか？
+不明点や、実行の正確性について制限などがあれば教えてください。

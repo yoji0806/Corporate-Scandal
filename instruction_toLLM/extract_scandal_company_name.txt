@@ -1,0 +1,89 @@
+Analyze the given titles of various scandal-related articles, and output a consistent JSON format containing the requested information.
+
+For each article title provided, you will answer the following:
+
+1. Determine if the scandal mentioned is associated with a private company. Represent your answer with `Y` for Yes or `N` for No.
+2. Extract the name of the organization or individual at the center of the scandal. If both company name and indivual are found, use the company name. If no suitable name can be found in the article title, use `"-"`.
+3. If the scandal is associated with a private company (`Y`), provide the listed company name related to the mentioned private company if available. If not available, provide their parent company name insted. if even its parent company is not available, use `"-"`.
+
+# Steps
+
+1. Read each title carefully.
+2. Identify if the scandal is related to a private company:
+    - Respond with `"s_c": "Y"` if it is.
+    - Respond with `"s_c": "N"` if it is not.
+3. Extract the name of the organization or individual if mentioned:
+    - Respond with `"n": "[extracted_name]"`.
+    - If a suitable name is not present, respond using `"n": "-"`.
+4. If related to a private company (`Y`), identify the listed company name:
+    - Respond with `"nn": "[listed_name]"`, indicating the related listed company.
+    - If no related listed company exists, respond with `"nn": "-"`.
+
+# Output Format
+
+The output should be structured as a JSON object for each title, containing the following fields:
+- `"no"`: The original article number.
+- `"s_c"`: A `"Y"` or `"N"` value responding to whether the scandal involves a private company.
+- `"n"`: The name of the organization or individual at the center of the scandal, or `"-"` if no name is available.
+- `"nn"`: If the scandal involves a private company, provide the related listed company's name, or `"-"` if unavailable.
+
+The output should be a list of JSON objects. Here is the format:
+```
+[
+  {
+    "no": "[article_number_1]",
+    "s_c": "[Y/N]",
+    "n": "[organization_name_or_individual]",
+    "nn": "[listed_company_name]"
+  },
+  {
+    "no": "[article_number_2]",
+    "s_c": "[Y/N]",
+    "n": "[organization_name_or_individual]",
+    "nn": "[listed_company_name]"
+  },
+  ...
+]
+```
+
+# Examples
+
+**Input**: "1.グローバル企業Aの内部情報漏洩発覚"
+- **Output**: 
+  ```
+  {
+    "no": 1,
+    "s_c": "Y",
+    "n": "グローバル企業A",
+    "nn": "グローバル企業B"
+  }
+  ```
+※グローバル企業Aは、非上場だがその親会社のグローバル企業Bが上場している場合。
+
+**Input**: "2.市会議員Bの違法寄付疑惑"
+- **Output**: 
+  ```
+  {
+    "no": 2,
+    "s_c": "N",
+    "n": "市会議員B",
+    "nn": "-"
+  }
+  ```
+
+**Input**: "3.大手企業による環境への影響が問題に"
+- **Output**: 
+  ```
+  {
+    "no": 3,
+    "s_c": "Y",
+    "n": "-",
+    "nn": "-"
+  }
+  ```
+
+# Notes
+
+- Make sure that each title is processed independently.
+- Focus on accurately determining whether the scandal involves a private company or not, reliably extracting the names without inferring beyond the provided information, and identifying listed companies and their tickers where relevant.
+- Any ambiguity in the title should be resolved conservatively—do not assume details not explicitly stated.
