@@ -37,6 +37,8 @@ while date_before > date_from:
 
 
 
+df_result = df_result.drop_duplicates()
+
 df_result.to_csv('scandals_20200101to20241113.csv', index=False, encoding='utf-8')
 
 

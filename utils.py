@@ -125,6 +125,33 @@ def call_openai_basic(instruction: str, prompt: str, model: str = "gpt-4o-mini")
             }
         ]
     )
-    print(completion.choices[0].message)
     
     return completion.choices[0].message
+
+
+def call_openai_structured_output(instruction: str, prompt: str, response_format, model: str = "gpt-4o-mini") -> str:
+    """
+    出力形式を一定にする、openAI のAPI呼び出し
+    詳しい使い方は、https://platform.openai.com/docs/guides/structured-outputs?context=ex2#json-mode
+
+    Args:
+        instruction (str): 検索ワード
+        prompt (str): 
+        model (str): chatGPTのモデル
+        response_format: pydantic の BaseModelを継承したクラス
+
+    Returns:
+        reuslt (str): AIの応答結果
+    """
+
+    client = OpenAI()
+    completion = client.beta.chat.completions.parse(
+        model = model,
+        messages=[
+            {"role": "system", "content": instruction},
+            {"role": "user", "content": prompt}
+        ],
+        response_format = response_format
+    )
+    
+    return completion.choices[0].message.parsed
