@@ -66,10 +66,12 @@ def df_google_news_from_to(date_before: str, date_after: str, keyword: str) -> p
 
 def get_stock_code(keyword: str) -> int:
     """
-    カブタンで、キーワードで検索して合致した場合にその企業銘柄を返す
+    カブタンで、キーワードで検索して合致した場合にその企業銘柄を返す。検索結果が2通りある。
+        1. 複数の候補がヒットした場合（例：https://kabutan.jp/search/?q=paypay）→最初に表示される銘柄を正とする。（例：PayPayの場合は、LINEヤフーではなく、ソフトバンクグループ）
+        2. 単一の結果がヒットした場合（例：https://kabutan.jp/stock/?q=LIQUID）
 
     Args:
-        keyword (str): 検索ワード
+        keyword (str): 検索ワード、企業名/ブランド名
 
     Returns:
         stock_code (int): 4桁の数字。見つからない場合は0を返す
@@ -78,14 +80,15 @@ def get_stock_code(keyword: str) -> int:
     base_url = "https://kabutan.jp/search/"
     search_url = f"{base_url}?q={keyword}"
     response = requests.get(search_url)
-    
+
     if response.status_code != 200:
         print("Failed to retrieve the page")
-        return None
-    
+        exit()
+
     soup = BeautifulSoup(response.text, 'html.parser')
     stock_code = None
 
+    #1. 例（https://kabutan.jp/search/?q=paypay）
     for link in soup.find_all('a', href=True):
         if link['href'].startswith('/search/linkcompany?code='):
             match = re.search(r'code=(\d+)', link['href'])
@@ -94,9 +97,18 @@ def get_stock_code(keyword: str) -> int:
                 break
 
     if not stock_code:
+        # 2. 例（https://kabutan.jp/stock/?code=5246） 
+        link_tag = soup.find('link', href=re.compile(r'code='))
+        if link_tag:
+            match = re.search(r'code=(\d+)', link_tag['href'])
+            if match:
+                stock_code = match.group(1)
+
+
+    if not stock_code:
         stock_code = 0
     
-    return stock_code
+    return int(stock_code)
 
 
 

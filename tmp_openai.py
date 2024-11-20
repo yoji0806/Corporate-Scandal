@@ -61,31 +61,7 @@ try:
             scandal_df.loc[row_index, 'company_name'] = item.n
             scandal_df.loc[row_index, 'related_company_name'] = item.nn
 
-        
 
-        # result_str = utils.call_openai_basic(instruction, prompt=str(batch_ls), model="gpt-4o")
-        # result_str = result_str.content
-
-        # chatGPTの表記揺れの修正
-        # if result_str.startswith("```json"):
-        #     result_str = result_str[7:-3]
-
-        # if result_str.startswith("\n"):
-        #     result_str = result_str[1:]
-        
-        # if result_str.startswith("\n"):
-        #     result_str = result_str[1:]
-
-        # if result_str.endswith("\n`"):
-        #     result_str = result_str[:-2]
-
-        #result_json = json.loads(result_str)
-
-        # for item in result_json:
-        #     row_index = int(item['no']) 
-        #     scandal_df.loc[row_index, 'scandal_of_company'] = item['s_c']
-        #     scandal_df.loc[row_index, 'company_name'] = item['n']
-        #     scandal_df.loc[row_index, 'related_company_name'] = item['nn']
 
         rap = time.time()
         elapsed_time = rap - start_time
